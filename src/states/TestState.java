@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import framework.State;
+import managers.KeyboardManager;
 import managers.SpriteManager;
 
 public class TestState extends State {
@@ -12,28 +13,22 @@ public class TestState extends State {
 	int yMove = 0;
 
 	SpriteManager sm;
+	KeyboardManager km;
 
 	@Override
 	public void init() {
 		sm = new SpriteManager("resources/sprites/rogueChar.png", 32, 32);
+		km = new KeyboardManager();
 	}
 
 	@Override
 	public void update() {
-
+		
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.drawImage(sm.getSpriteAt(0, movementToSpriteSheetRow(xMove, yMove)), 0, 0, 100, 100, null);
-		// 0, -1 = 0
-		// 1, -1 = 1
-		// 1, 0 = 2
-		// 1, 1 = 3
-		// 0, 1 = 4
-		// -1, 1 = 5
-		// -1, 0 = 6
-		// -1, -1= 7
 	}
 
 	public int movementToSpriteSheetRow(int x, int y) {
@@ -46,28 +41,16 @@ public class TestState extends State {
 		} else if (x == 1) {
 			return 2 + y;
 		} else if (x == -1) {
-			return 6 + y;
+			return 6 - y;
 		}
 		return 0;
 	}
 
 	@Override
 	public void keyEvent(int keyCode, String eventType) {
-		if (eventType.equals("keyPressed")) {
-			if (keyCode == KeyEvent.VK_A) {
-				if (xMove == 0) {
-					xMove = -1;
-				} else {
-					xMove = 0;
-				}
-			} else if (keyCode == KeyEvent.VK_D) {
-				if (xMove == 0) {
-					xMove = 1;
-				} else {
-					xMove = 0;
-				}
-			}
-		}
+		km.updateKeyEvent(keyCode, eventType);
+		xMove = (km.checkKey(KeyEvent.VK_A)? -1:0) + (km.checkKey(KeyEvent.VK_D)? 1:0);
+		yMove = (km.checkKey(KeyEvent.VK_W)? 1:0) + (km.checkKey(KeyEvent.VK_S)? -1:0);
 	}
 
 	@Override
