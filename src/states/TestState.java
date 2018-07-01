@@ -1,56 +1,45 @@
 package states;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
+import java.awt.Graphics2D;
 
 import framework.State;
+import graphics.TileMap;
 import managers.KeyboardManager;
-import managers.SpriteManager;
+import managers.PlayerManager;
+import managers.PlayerSpriteManager;
 
 public class TestState extends State {
 
-	int xMove = 0;
-	int yMove = 0;
-
-	SpriteManager sm;
+	PlayerManager pm;
+	PlayerSpriteManager psm;
 	KeyboardManager km;
+	
+	TileMap tm;
 
 	@Override
 	public void init() {
-		sm = new SpriteManager("resources/sprites/rogueChar.png", 32, 32);
+		pm = new PlayerManager(128,128);
+		psm = new PlayerSpriteManager("resources/sprites/rogueChar.png", 32, 32);
 		km = new KeyboardManager();
+		
+		tm = new TileMap("resources/tilemaps/tilemap01.txt");
 	}
 
 	@Override
 	public void update() {
-		
+		pm.update();
 	}
 
 	@Override
-	public void render(Graphics g) {
-		g.drawImage(sm.getSpriteAt(0, movementToSpriteSheetRow(xMove, yMove)), 0, 0, 100, 100, null);
-	}
-
-	public int movementToSpriteSheetRow(int x, int y) {
-		if (x == 0) {
-			if (y == 1) {
-				return 4;
-			} else {
-				return 0;
-			}
-		} else if (x == 1) {
-			return 2 + y;
-		} else if (x == -1) {
-			return 6 - y;
-		}
-		return 0;
+	public void render(Graphics2D g) {
+		tm.render(g, 16, 16, 32, 32);
+		pm.render(g, psm);
 	}
 
 	@Override
 	public void keyEvent(int keyCode, String eventType) {
 		km.updateKeyEvent(keyCode, eventType);
-		xMove = (km.checkKey(KeyEvent.VK_A)? -1:0) + (km.checkKey(KeyEvent.VK_D)? 1:0);
-		yMove = (km.checkKey(KeyEvent.VK_W)? 1:0) + (km.checkKey(KeyEvent.VK_S)? -1:0);
+		pm.keyboardUpdate(km);
 	}
 
 	@Override

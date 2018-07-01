@@ -1,6 +1,7 @@
 package framework;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -138,7 +139,7 @@ public class Window extends JPanel {
 	}
 
 	public void paintComponent(Graphics g) {
-		state.render(g);
+		state.render((Graphics2D)g);
 	}
 
 }
