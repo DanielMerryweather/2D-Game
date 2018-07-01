@@ -6,7 +6,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-import managers.FileManager;
+import utilities.FileManager;
 
 public class TileMap {
 
@@ -19,7 +19,6 @@ public class TileMap {
 		this.resources = info[0].split(",");
 		this.map = new int[info.length-1][];
 		for(int y=1;y<info.length;y++) {
-			System.out.println(info[y]);
 			String[] cols = info[y].split("");
 			this.map[y-1] = new int[cols.length];
 			for(int x=0;x<cols.length;x++) {

@@ -2,6 +2,8 @@ package managers;
 
 import java.awt.image.BufferedImage;
 
+import utilities.FileManager;
+
 public class SpriteManager {
 
 	int width = 0;
